@@ -8,7 +8,7 @@ node {
       submoduleCfg                     : [],
       userRemoteConfigs                : [
         [credentialsId: '283ec90c-febf-4add-94fa-5d6769cd017c',
-         url          : 'git@git.nju.edu.cn:171250554/segjjs.git'
+         url          : 'git@git.nju.edu.cn:171250554/frontend.git'
         ]
       ]
     ])
