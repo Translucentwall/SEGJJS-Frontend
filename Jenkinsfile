@@ -29,7 +29,7 @@ node {
     sh "rm -rf /root/se3frontend"
     sh "mkdir /root/se3frontend"
     sh "cd /root/se3frontend"
-    sh "tar -xzf ../se3frontend.tar.gz"
+    sh "tar -xzf /var/jenkins_home/workspace/frontend/se3frontend.tar.gz"
     sh "docker rm -f se3www"
     sh "cd /root/se3frontend"
     sh "docker build -f Dockerfile -t se3vue ."
