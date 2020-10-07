@@ -26,14 +26,14 @@ node {
   }
 
   stage("publish"){
-    //sh "sudo rm -rf /root/se3frontend"
-    sh "sudo mkdir /root/se3frontend"
-    sh "sudo cd /root/se3frontend"
-    sh "sudo tar -xzf ../se3frontend.tar.gz"
-    //sh "sudo docker rm -f se3www"
-    sh "sudo cd /root/se3frontend"
-    sh "sudo docker build -f Dockerfile -t se3vue ."
-    sh "sudo docker run -d -p 80:80 --link se3:se3 --name se3www se3vue:latest"
+    sh "rm -rf /root/se3frontend"
+    sh "mkdir /root/se3frontend"
+    sh "cd /root/se3frontend"
+    sh "tar -xzf ../se3frontend.tar.gz"
+    sh "docker rm -f se3www"
+    sh "cd /root/se3frontend"
+    sh "docker build -f Dockerfile -t se3vue ."
+    sh "docker run -d -p 80:80 --link se3:se3 --name se3www se3vue:latest"
   }
 
   /**stage("remote") {
