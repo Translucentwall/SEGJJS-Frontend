@@ -17,12 +17,6 @@ node {
   stage("npm") {
     nodejs(configId: '89bce46f-98db-47c9-9f93-715126ae44ab', nodeJSInstallationName: 'nodejs') {
       sh 'npm set sass_binary_site=https://npm.taobao.org/mirrors/node-sass/ && npm install --unsafe-perm -g node-sass'
-      sh 'cd /var/jenkins_home/workspace/frontend/node_modules'
-      sh 'rm -rf caniuse-lite'
-      sh 'rm -rf browserslist'
-      sh 'npm i -g caniuse-lite'
-      sh 'npm i -g browserslist'
-      sh 'cd /var/jenkins_home/workspace/frontend'
       sh 'npm install --unsafe-perm && npm run build'
     }
   }
