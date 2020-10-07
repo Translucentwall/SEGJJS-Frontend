@@ -25,7 +25,7 @@ node {
     sh "tar -cvzf se3frontend.tar.gz dist Dockerfile nginx.conf"
   }
 
-  stage("remote") {
+  /**stage("remote") {
     sshPublisher(
       publishers: [
         sshPublisherDesc(
@@ -54,7 +54,7 @@ cd /root/se3frontend && docker build -f Dockerfile -t se3vue . && docker run -d 
         )
       ]
     )
-  }
+  }**/
 
 //  stage("docker-build") {
 //    sh "docker build -f Dockerfile -t se3vue ."
