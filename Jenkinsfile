@@ -25,8 +25,6 @@ node {
     sh "tar -cvzf se3frontend.tar.gz dist Dockerfile nginx.conf"
   }
 
-
-
   stage("remote") {
     sshPublisher(
       publishers: [
