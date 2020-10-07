@@ -17,7 +17,7 @@ node {
   stage("npm") {
     nodejs(configId: '89bce46f-98db-47c9-9f93-715126ae44ab', nodeJSInstallationName: 'nodejs') {
       //sh 'npm set sass_binary_site=https://npm.taobao.org/mirrors/node-sass/ && npm install --unsafe-perm -g node-sass'
-      //sh 'npm install --unsafe-perm && '
+      //sh 'npm install --unsafe-perm'
       //sh 'npm run build'
     }
   }
