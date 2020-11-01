@@ -45,7 +45,7 @@ cd /root/segjjsfrontend && docker build -f Dockerfile -t segjjsvue . && docker r
               remoteDirectory: '',
               remoteDirectorySDF: false,
               removePrefix: '',
-              sourceFiles: 'se3frontend.tar.gz'
+              sourceFiles: 'segjjsfrontend.tar.gz'
             )
           ],
           usePromotionTimestamp: false,
