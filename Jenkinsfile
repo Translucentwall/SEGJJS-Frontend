@@ -34,9 +34,9 @@ node {
             sshTransfer(
               cleanRemote: false,
               excludes: '',
-              execCommand: '''rm -rf /root/se3frontend && mkdir /root/se3frontend && cd /root/se3frontend && tar -xzf /se3frontend.tar.gz
-docker rm -f se3www
-cd /root/se3frontend && docker build -f Dockerfile -t se3vue . && docker run -d -p 80:80 --link se3:se3 --name se3www se3vue:latest''',
+              execCommand: '''rm -rf /root/segjjsfrontend && mkdir /root/segjjsfrontend && cd /root/segjjsfrontend && tar -xzf /segjjsfrontend.tar.gz
+docker rm -f segjjswww
+cd /root/segjjsfrontend && docker build -f Dockerfile -t segjjsvue . && docker run -d -p 80:80 --link segjjs:segjjs --name segjjswww segjjsvue:latest''',
               execTimeout: 120000,
               flatten: false,
               makeEmptyDirs: false,
