@@ -22,7 +22,7 @@ node {
   }
 
   stage("tar") {
-    sh "tar -cvzf se3frontend.tar.gz dist Dockerfile nginx.conf"
+    sh "tar -cvzf segjjsfrontend.tar.gz dist Dockerfile nginx.conf"
   }
 
   stage("remote") {
