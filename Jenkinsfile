@@ -56,6 +56,7 @@ cd /root/segjjsfrontend && docker build -f Dockerfile -t segjjsvue . && docker r
     )
   }
 
+
 //  stage("docker-build") {
 //    sh "docker build -f Dockerfile -t se3vue ."
 //  }
