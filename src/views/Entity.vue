@@ -274,6 +274,8 @@
                       this.allTermItems = allTermItems;
                       this.showTermItems = this.allTermItems;
                       loadingInstance.close();
+
+                      this.fillInAffDataset();
                   })
                   .catch(()=>{
                       this.$alert('Fail to get entity，please search again', 'Tips',{
@@ -284,15 +286,11 @@
                           window.location.href = '/home';
                       })
                   });
-
-              this.fillInAffDataset();
           },
           methods: {
 
               fillInAffDataset: function () {
-                 //let data = this.academicEntityVO.yearlyAffiliationList;
-                 let data = [{year: '2013', affName: 'Nanjing University'},
-                   {year: '2014', affName: 'Beijing University'}];
+                 let data = this.academicEntityVO.yearlyAffiliationList;
                  let timeAffList = [];
                  data.forEach(function (d) {
                      timeAffList.push({
