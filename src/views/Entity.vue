@@ -184,7 +184,11 @@
                   termSelect: -1,
                   allTermItems: [],
                   showTermItems: [],
-                  significantPapers: []
+                  significantPapers: [],
+                  timeIndex: 0, // 默认显示位置是最早的年份
+                  popTrend: '2020',
+                  keywordsYears: [], // 年份-关键词列表
+                  yearlyAffiliationList: [] // 年份-机构列表
               }
           },
           watch: {
@@ -268,6 +272,22 @@
                   });
           },
           methods: {
+              // changeActive(index) {
+              //   this.timeIndex = index;
+              // },
+              // moveLeft()  {
+              //   let marginLeft = parseInt(this.$refs.mytimeline.style.marginLeft);
+              //   let listNum = 0;
+              //   if(marginLeft <= 10 && (marginLeft >= -650)){
+              //     this.$refs.mytimeline.style.marginLeft = marginLeft - 220 + 'px';
+              //   }
+              // },
+              // moveRight() {
+              //   let marginLeft = parseInt(this.$refs.mytimeline.style.marginLeft);
+              //   if(marginLeft < (-200)){
+              //     this.$refs.mytimeline.style.marginLeft = marginLeft + 220 + 'px';
+              //   }
+              // },
               toOtherEntity: function (type, id) {
                   window.location.href='/entity/' + type + '/' + id;
               },
