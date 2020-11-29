@@ -51,14 +51,14 @@
                   </el-col>
                 </el-row>
               </el-tab-pane>
+
               <el-tab-pane v-if="academicEntityVO.affiliations&&academicEntityVO.affiliations.length>0" name="affiliation">
                 <span slot="label"><i class="el-icon-s-home"></i> Affiliations</span>
-                <el-row>
+                <!--<el-row>
                   <el-col class="column" :span="12" v-for="(affiliation,index) in academicEntityVO.affiliations" :key="index">
                     <el-row  class="entity-wrap">
                       <el-col :span="14">
                         <a class="entity" :title="affiliation.name" :href="'/entity/affiliation/' + affiliation.id">
-<!--                          {{affiliation.name.length>25?affiliation.name.substr(0,25)+'...':affiliation.name}}-->
                           {{(index + 1) + '. ' +affiliation.name}}
                         </a>
                       </el-col>
@@ -67,8 +67,16 @@
                       </el-col>
                     </el-row>
                   </el-col>
-                </el-row>
+                </el-row>-->
+                <div class="hello">
+                  <div style="display:flex; width:900px;margin:50px auto;">
+                    <div style="flex:1">Affiliation Timeline:</div>
+                    <timeLine :timeLineList = "timeLineList"></timeLine>
+                  </div>
+                </div>
+
               </el-tab-pane>
+
               <el-tab-pane v-if="academicEntityVO.conferences&&academicEntityVO.conferences.length>0" name="conference">
                 <span slot="label"><i class="el-icon-time"></i> Conferences</span>
                 <el-row>
@@ -86,6 +94,7 @@
                   </el-col>
                 </el-row>
               </el-tab-pane>
+
               <el-tab-pane name="cloud" v-if="academicEntityVO.terms&&academicEntityVO.terms.length>0">
                 <span slot="label"><i class="el-icon-cloudy"></i> Cloud</span>
                 <div id="cloud-wrap">
@@ -95,6 +104,7 @@
                   <em>hover or click to know more ...</em>
                 </div>
               </el-tab-pane>
+
               <el-tab-pane name="graph">
                 <span slot="label"><i class="el-icon-connection"></i> Relation Graph</span>
                 <relation-graph v-if="id!==0&&activeName==='graph'" :eid="parseInt(id)" :etype="type" :size="size"></relation-graph>
@@ -106,6 +116,7 @@
                   </router-link>
                 </div>
               </el-tab-pane>
+
             </el-tabs>
             </el-col>
           </el-row>
@@ -165,12 +176,13 @@
   import * as d3_cloud from 'd3-cloud';
   import RelationGraph from "../components/RelationGraph";
   import HotGraph from "../components/HotGraph";
+  import timeLine from '../components/timeLine.vue'
   import echarts from 'echarts';
   import 'echarts-wordcloud'
 
       export default {
           name: "Entity",
-          components: {HotGraph, RelationGraph, Card},
+          components: {HotGraph, RelationGraph, Card, timeLine},
           data(){
               return{
                   id: 0,
@@ -185,13 +197,13 @@
                   allTermItems: [],
                   showTermItems: [],
                   significantPapers: [],
-                  timeIndex: 0, // 默认显示位置是最早的年份
-                  popTrend: '2020',
-                  keywordsYears: [], // 年份-关键词列表
-                  yearlyAffiliationList: [] // 年份-机构列表
+                  timeLineList: [],
               }
           },
           watch: {
+              // fillData: function() {
+              //   this.fillInAffDataset();
+              // },
               activeName: function(){
                   if(this.activeName === 'cloud' && !this.hasCloud && this.academicEntityVO.terms && this.academicEntityVO.terms.length > 0){
                       let that = this;
@@ -225,7 +237,9 @@
               if(this.id===undefined || this.type===undefined){
                   window.location.href = '/home';
               }
+
               let loadingInstance = Loading.service({ fullscreen: true, text:'loading...'});
+
               getAcademicEntity(this.id,this.type)
                   .then(res => {
                       res.yearlyTerms.sort(function (a, b) {
@@ -270,24 +284,25 @@
                           window.location.href = '/home';
                       })
                   });
+
+              this.fillInAffDataset();
           },
           methods: {
-              // changeActive(index) {
-              //   this.timeIndex = index;
-              // },
-              // moveLeft()  {
-              //   let marginLeft = parseInt(this.$refs.mytimeline.style.marginLeft);
-              //   let listNum = 0;
-              //   if(marginLeft <= 10 && (marginLeft >= -650)){
-              //     this.$refs.mytimeline.style.marginLeft = marginLeft - 220 + 'px';
-              //   }
-              // },
-              // moveRight() {
-              //   let marginLeft = parseInt(this.$refs.mytimeline.style.marginLeft);
-              //   if(marginLeft < (-200)){
-              //     this.$refs.mytimeline.style.marginLeft = marginLeft + 220 + 'px';
-              //   }
-              // },
+
+              fillInAffDataset: function () {
+                 //let data = this.academicEntityVO.yearlyAffiliationList;
+                 let data = [{year: '2013', affName: 'Nanjing University'},
+                   {year: '2014', affName: 'Beijing University'}];
+                 let timeAffList = [];
+                 data.forEach(function (d) {
+                     timeAffList.push({
+                       timestamp: d.year,
+                       info: d.affName
+                     })
+                 });
+                 this.timeLineList = timeAffList;
+              },
+
               toOtherEntity: function (type, id) {
                   window.location.href='/entity/' + type + '/' + id;
               },
