@@ -1,6 +1,5 @@
 import axios from 'axios';
 import cookie from 'js-cookie'
-
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 axios.defaults.baseURL = process.env.NODE_ENV === 'production'
   ? 'http://' + location.hostname +':80/api'
@@ -68,4 +67,9 @@ export const getGraph = (id, type) =>{
 
 export const getMoreGraph = (id, type) =>{
   return axios.get('/graph/more/' + id + '?type=' + type).then(res=>res.data);
+};
+
+// wait for backend to adjust interface format
+export const searchPeerReviewer = (name, aff, terms) => {
+  return axios.post('/peerReview/recommend',{author:name,affiliation:aff,term:terms}).then(res=>res.data);
 };

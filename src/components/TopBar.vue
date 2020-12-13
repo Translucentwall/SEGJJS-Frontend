@@ -7,7 +7,8 @@
       @select="handleSelect"
       active-text-color="#000000"
     >
-      <el-menu-item class="home" index="/home" :style="{margin: this.$route.path==='/admin/manage'?'0 0 0 35%':'0 0 0 40%'}">Home</el-menu-item>
+      <el-menu-item class="home" index="/home" :style="{margin: this.$route.path==='/admin/manage'?'0 0 0 30%':'0 0 0 35%'}">Home</el-menu-item>
+      <el-menu-item class="home" index="/review">Review</el-menu-item>
       <el-submenu index="2">
         <template  class="submenu-title" slot="title">Rank</template>
         <el-submenu index="/rank">

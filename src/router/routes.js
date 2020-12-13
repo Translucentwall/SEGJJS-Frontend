@@ -6,6 +6,7 @@ import AdminLogin from "../views/AdminLogin";
 import Entity from "../views/Entity";
 import Manage from "../views/Manage";
 import Graph from "../views/Graph";
+import PeerReview from "../views/PeerReview";
 
 export let routes = [
   {
@@ -20,6 +21,11 @@ export let routes = [
     path: '/home',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/review',
+    name: 'PeerReview',
+    component: PeerReview
   },
   {
     path: '/search/:mode/:content',
