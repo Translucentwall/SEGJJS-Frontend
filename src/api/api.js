@@ -69,7 +69,6 @@ export const getMoreGraph = (id, type) =>{
   return axios.get('/graph/more/' + id + '?type=' + type).then(res=>res.data);
 };
 
-// wait for backend to adjust interface format
 export const searchPeerReviewer = (name, aff, terms) => {
   return axios.post('/peerReview/recommend',{author:name,affiliation:aff,term:terms}).then(res=>res.data);
 };

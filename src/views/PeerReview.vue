@@ -33,16 +33,6 @@
       <span class="reviewer-list-title">Recommended Peer-Reviewers List</span>
 
       <div class="peer-reviewer-list-content" id="list-content">
-        <!--<div class="peer-reviewer-block">
-          <span class="number-label">1</span>
-          <span class="reviewer-name">T. Zimmermann</span>
-          <span class="recommend-stars">★★★★★★★★★★</span>
-        </div>
-        <div class="peer-reviewer-block">
-          <span class="number-label">2</span>
-          <span class="reviewer-name">A. Zimmermann</span>
-          <span class="recommend-stars">★★★★★★★</span>
-        </div>-->
       </div>
 
     </div>
@@ -74,20 +64,8 @@
 
       searchPeerReviewer: function () {
         if(this.name !== '' && this.affiliation !== '' && this.terms !== '') {
-          //let str = {"author": this.name, "affiliation": this.affiliation, "term": this.terms};
-          //let data = JSON.stringify(str);
           searchPeerReviewer(this.name, this.affiliation, this.terms).then(res=>{
-            // if(res.success){
-            //
-            // } else {
-            //   this.$message({
-            //     message:'Access peer reviewers failed :(',
-            //     type: 'error',
-            //     duration: 1000
-            //   });
-            // }
-            // 更新推荐评议者的列表显示
-
+            //更新评议者的列表显示
             let stars = ['★','★★','★★★','★★★★','★★★★★','★★★★★★','★★★★★★★',
               '★★★★★★★★','★★★★★★★★★','★★★★★★★★★★'];
             let number = 1;
