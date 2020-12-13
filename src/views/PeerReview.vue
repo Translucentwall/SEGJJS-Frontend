@@ -45,6 +45,7 @@
   import {searchPeerReviewer} from "../api/api";
   import Search from "../components/Search";
   import $ from 'jquery';
+  import 'jquery';
 
   export default {
     name: "PeerReview",
@@ -100,6 +101,8 @@
               number += 1;
             });
 
+            //$('#list-content').empty();
+            document.getElementById("list-content").innerHTML = "";
             $('#list-content').append(blockHtml);
 
           })
