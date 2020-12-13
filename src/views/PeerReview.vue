@@ -33,6 +33,7 @@
       <span class="reviewer-list-title">Recommended Peer-Reviewers List</span>
 
       <div class="peer-reviewer-list-content" id="list-content">
+
       </div>
 
     </div>
@@ -43,6 +44,7 @@
 
   import {searchPeerReviewer} from "../api/api";
   import Search from "../components/Search";
+  import $ from 'jquery';
 
   export default {
     name: "PeerReview",
@@ -69,27 +71,36 @@
             let stars = ['★','★★','★★★','★★★★','★★★★★','★★★★★★','★★★★★★★',
               '★★★★★★★★','★★★★★★★★★','★★★★★★★★★★'];
             let number = 1;
-            let div = document.getElementById("list-content");
             let revlist = res.content;
-            //console.log(res);
+            let blockHtml = '';
 
-            for(let i = 0; i < revlist.length; i++) {
-              let reviewer = revlist[i];
-              // map rank value to 1~10 stars
+            let pMax = Math.ceil(revlist[0].pop);
+            let pMin = Math.ceil(revlist[revlist.length - 1].pop);
+            console.log(pMax);
+            console.log(pMin);
+
+            revlist.forEach(function (reviewer) {
+              // 将推荐值映射到1~10星
               let popVal = Math.ceil(reviewer.pop);
-              while(popVal > 9) {
-                popVal /= 10;
+              let normalize = Math.floor(9 * (popVal - pMin) / (pMax - pMin));
+              while(normalize < 0) {
+                normalize += 1;
               }
-              let star = stars[popVal];
+              let star = stars[normalize > 9 ? 9 : normalize];
 
-              // append data block to div
-              div.append('<div class="peer-reviewer-block">\n' +
-                '          <span class="number-label">' + number + '</span>\n' +
-                '          <span class="reviewer-name">' + reviewer.author.name + '</span>\n' +
-                '          <span class="recommend-stars">' + star + '</span>\n' +
-                '        </div>');
+              // 添加内容到字段列表
+              blockHtml += '<div class="peer-reviewer-block" style="width: 40vw">\n' +
+                '          <div class="number-label" style="color: #6d6d6d; font-family: \'Arial\', sans-serif; ' +
+                'font-size: 15px; user-select: none; width: 30px; display: inline-block">' + number + '</div>\n' +
+                '          <div class="reviewer-name" style="font-family: \'Arial\', sans-serif;display: inline-block; ' +
+                'font-size: 15px; margin-left: 20px; width: 250px">' + reviewer.authorName + '</div>\n' +
+                '          <div class="recommend-stars" style="font-family: \'Arial\', sans-serif; display: inline-block; ' +
+                'font-size: 15px; color: #e29633; user-select: none; margin-left: 40px">' + star + '</div>\n' +
+                '        </div>';
               number += 1;
-            }
+            });
+
+            $('#list-content').append(blockHtml);
 
           })
         } else {
