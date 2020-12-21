@@ -24,15 +24,6 @@ export const getPopRank = (type)=>{
   return axios.get('/hot?type='+type).then(res=>res.data);
 };
 
-export const login = (username, password, remember_me) =>{
-  let data = {};
-  return axios.post('/login?remember-me='+remember_me,{username:username,password:password}).then(res=>res.data);
-};
-
-export const logout = () => {
-  return axios.post('/logout').then(res=>res.data);
-};
-
 export const getConfusedAlias = (page, type) => {
   let authorize = cookie.get('Authorization');
     return axios.get('/admin/getConfusedAlias?page='+page+'&type='+type, (authorize===undefined?'':{headers:{'Authorization': 'Bearer '+authorize}})).then(res=>res.data);

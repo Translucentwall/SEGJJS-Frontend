@@ -2,9 +2,7 @@ import Home from '../views/Home'
 import Search from '../views/SearchPage'
 import Rank from '../views/Rank'
 import Paper from '../views/Paper'
-import AdminLogin from "../views/AdminLogin";
 import Entity from "../views/Entity";
-import Manage from "../views/Manage";
 import Graph from "../views/Graph";
 import PeerReview from "../views/PeerReview";
 
@@ -42,16 +40,16 @@ export let routes = [
     name: 'Paper',
     component: Paper
   },
-  {
-    path: '/login',
-    name: 'AdminLogin',
-    component: AdminLogin
-  },
-  {
-    path: '/admin/manage',
-    name: 'AdminManage',
-    component: Manage
-  },
+  // {
+  //   path: '/login',
+  //   name: 'AdminLogin',
+  //   component: AdminLogin
+  // },
+  // {
+  //   path: '/admin/manage',
+  //   name: 'AdminManage',
+  //   component: Manage
+  // },
   {
     path:'/entity/:type/:id',
     name:'Entity',
