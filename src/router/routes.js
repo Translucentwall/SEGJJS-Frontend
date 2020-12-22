@@ -40,16 +40,6 @@ export let routes = [
     name: 'Paper',
     component: Paper
   },
-  // {
-  //   path: '/login',
-  //   name: 'AdminLogin',
-  //   component: AdminLogin
-  // },
-  // {
-  //   path: '/admin/manage',
-  //   name: 'AdminManage',
-  //   component: Manage
-  // },
   {
     path:'/entity/:type/:id',
     name:'Entity',

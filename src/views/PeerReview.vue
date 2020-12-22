@@ -19,10 +19,17 @@
         </div>
         <div class="peer-review-terms">
           <code class="text">Terms: </code>
-          <el-input
-            v-model="terms"
+<!--          <el-input-->
+<!--            v-model="terms"-->
+<!--            class="local-input"-->
+<!--          ></el-input>-->
+          <el-autocomplete
             class="local-input"
-          ></el-input>
+           v-model="terms"
+          :fetch-suggestions="queryTerms"
+          :trigger-on-focus="false"
+          @select="handleSelect">
+          </el-autocomplete>
         </div>
       </div>
 
@@ -42,7 +49,7 @@
 
 <script>
 
-  import {searchPeerReviewer} from "../api/api";
+import {autoComplete, searchPeerReviewer} from "../api/api";
   import Search from "../components/Search";
   import $ from 'jquery';
   import 'jquery';
@@ -113,7 +120,23 @@
             duration: 1500
           });
         }
+      },
+      queryTerms(queryString, cb){
+        autoComplete(queryString).then(res=>{
+          let results=res.map(
+            v=>{
+              let sin={};
+              sin['value']=v;
+              return sin;
+            }
+          );
+          cb(results);
+        })
+      },
+      handleSelect(item) {
+        console.log(item);
       }
+
     }
   }
 </script>

@@ -63,3 +63,7 @@ export const getMoreGraph = (id, type) =>{
 export const searchPeerReviewer = (name, aff, terms) => {
   return axios.post('/peerReview/recommend',{author:name,affiliation:aff,term:terms}).then(res=>res.data);
 };
+
+export const autoComplete=(prefix)=>{
+  return axios.get('/peerReview/complete/'+prefix).then(res=>res.data);
+}
