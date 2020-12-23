@@ -67,3 +67,7 @@ export const searchPeerReviewer = (name, aff, terms) => {
 export const autoComplete=(prefix)=>{
   return axios.get('/peerReview/complete/'+prefix).then(res=>res.data);
 }
+
+export const cooperatorPreview=(id)=>{
+  return axios.get('/academic/cooperators/'+id).then(res=>res.data);
+}

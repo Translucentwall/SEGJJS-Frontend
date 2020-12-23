@@ -19,10 +19,6 @@
         </div>
         <div class="peer-review-terms">
           <code class="text">Terms: </code>
-<!--          <el-input-->
-<!--            v-model="terms"-->
-<!--            class="local-input"-->
-<!--          ></el-input>-->
           <el-autocomplete
             class="local-input"
            v-model="terms"

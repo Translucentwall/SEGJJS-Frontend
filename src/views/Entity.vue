@@ -52,7 +52,7 @@
                 </el-row>
               </el-tab-pane>
 
-              <el-tab-pane v-if="academicEntityVO.affiliations&&academicEntityVO.affiliations.length>0" name="affiliation">
+              <el-tab-pane v-if="academicEntityVO.yearlyAffiliationList&&academicEntityVO.yearlyAffiliationList.length>0" name="affiliation">
                 <span slot="label"><i class="el-icon-s-home"></i> Affiliations</span>
                 <!--<el-row>
                   <el-col class="column" :span="12" v-for="(affiliation,index) in academicEntityVO.affiliations" :key="index">
@@ -116,6 +116,10 @@
                   </router-link>
                 </div>
               </el-tab-pane>
+              <el-tab-pane name="coo" v-if="cooList&&cooList.length>0">
+                <span slot="label"><i class="el-icon-connection"></i> Cooperator Preview</span>
+                <CooPreview :cooList="cooList"></CooPreview>
+              </el-tab-pane>
 
             </el-tabs>
             </el-col>
@@ -169,7 +173,7 @@
 </template>
 
 <script>
-  import {getAcademicEntity, getSignificantPaper} from "../api/api";
+import {cooperatorPreview, getAcademicEntity, getSignificantPaper} from "../api/api";
   import Card from "../components/Card";
   import {Loading} from "element-ui";
   import * as d3 from 'd3';
@@ -179,10 +183,11 @@
   import timeLine from '../components/timeLine.vue'
   import echarts from 'echarts';
   import 'echarts-wordcloud'
+  import CooPreview from "../components/CooPreview";
 
       export default {
           name: "Entity",
-          components: {HotGraph, RelationGraph, Card, timeLine},
+          components: {CooPreview, HotGraph, RelationGraph, Card, timeLine},
           data(){
               return{
                   id: 0,
@@ -198,6 +203,7 @@
                   showTermItems: [],
                   significantPapers: [],
                   timeLineList: [],
+                  cooList: []
               }
           },
           watch: {
@@ -240,6 +246,7 @@
 
               let loadingInstance = Loading.service({ fullscreen: true, text:'loading...'});
 
+
               getAcademicEntity(this.id,this.type)
                   .then(res => {
                       res.yearlyTerms.sort(function (a, b) {
@@ -248,14 +255,14 @@
                       this.academicEntityVO = res;
                       if(res.authors&&res.authors[0]){
                           this.activeName = 'author';
-                      }else if(res.affiliations&&res.affiliations[0]){
+                      }else if(res.yearlyAffiliationList&&res.yearlyAffiliationList[0]){
                           this.activeName = 'affiliation';
                       }else if(res.conferences&&res.conferences[0]){
                           this.activeName = 'conference';
                       }else if(res.terms&&res.terms[0]){
                           this.activeName = 'cloud';
                       }else{
-                          this.activeName = 'graph';
+                        this.activeName = 'graph';
                       }
                       let allTermItems = [];
                       this.academicEntityVO.yearlyTerms.forEach(function(yearlyTerm){
@@ -275,7 +282,9 @@
                       this.showTermItems = this.allTermItems;
                       loadingInstance.close();
 
-                      this.fillInAffDataset();
+                      if(res.yearlyAffiliationList){
+                        this.fillInAffDataset();
+                      }
                   })
                   .catch(()=>{
                       this.$alert('Fail to get entity，please search again', 'Tips',{
@@ -286,6 +295,11 @@
                           window.location.href = '/home';
                       })
                   });
+              if(this.type===1) {
+                cooperatorPreview(this.id).then(res => {
+                  this.cooList = res;
+                })
+              }
           },
           methods: {
 

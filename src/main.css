@@ -87,3 +87,9 @@
 .el-tabs--border-card>.el-tabs__header .el-tabs__item:not(.is-disabled):hover{
   color: #000000;
 }
+.el-table tbody tr>td {
+  cursor: pointer;
+}
+.el-table tbody tr:hover>td {
+  background-color: #ffffff;
+}
