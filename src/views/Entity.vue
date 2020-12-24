@@ -117,7 +117,7 @@
                 </div>
               </el-tab-pane>
               <el-tab-pane name="coo" v-if="cooList&&cooList.length>0">
-                <span slot="label"><i class="el-icon-connection"></i> Cooperator Preview</span>
+                <span slot="label"><i class="el-icon-coordinate"></i> Cooperator Preview</span>
                 <CooPreview :cooList="cooList"></CooPreview>
               </el-tab-pane>
 
