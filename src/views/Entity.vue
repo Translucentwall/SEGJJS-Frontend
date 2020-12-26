@@ -95,13 +95,13 @@
                 </el-row>
               </el-tab-pane>
 
-              <el-tab-pane name="cloud" v-if="academicEntityVO.terms&&academicEntityVO.terms.length>0">
+              <el-tab-pane v-if="academicEntityVO.yearlyTerms && academicEntityVO.yearlyTerms.length > 0" name="yearly-fields">
                 <span slot="label"><i class="el-icon-cloudy"></i> Research Fields</span>
-                <div id="cloud-wrap">
-                  <div class="svg" id="cloud"></div>
-                </div>
-                <div class="cloud_tip" v-if="hasCloud">
-                  <em>hover or click to know more ...</em>
+                <div class="hello">
+                  <div style="display:flex; width:900px;margin:50px auto;">
+                    <div style="flex:1; width: 240px">Research Field Timeline:</div>
+                    <timeLine :timeLineList = "yearlyTermsList"></timeLine>
+                  </div>
                 </div>
               </el-tab-pane>
 
@@ -221,7 +221,8 @@ import {cooperatorPreview, getAcademicEntity, getSignificantPaper} from "../api/
                   referred: [],
                   cited: [],
                   refOverLen: -1,
-                  citOverLen: -1
+                  citOverLen: -1,
+                  yearlyTermsList: []
               }
           },
           watch: {
@@ -292,7 +293,7 @@ import {cooperatorPreview, getAcademicEntity, getSignificantPaper} from "../api/
                               if(!has){
                                   allTermItems.push(termItem);
                               }
-                          })
+                          });
                       });
                       this.allTermItems = allTermItems;
                       this.showTermItems = this.allTermItems;
@@ -300,6 +301,9 @@ import {cooperatorPreview, getAcademicEntity, getSignificantPaper} from "../api/
 
                       if(res.yearlyAffiliationList){
                         this.fillInAffDataset();
+                      }
+                      if(res.yearlyTerms) {
+                        this.fillInYearlyTermsList();
                       }
 
                       this.getRefAndCitList();
@@ -323,6 +327,24 @@ import {cooperatorPreview, getAcademicEntity, getSignificantPaper} from "../api/
 
           },
           methods: {
+
+              fillInYearlyTermsList: function() {
+                  let data = this.academicEntityVO.yearlyTerms;
+                  let temp = [];
+                  data.forEach(function (d) {
+                      let timestamp = d.year;
+                      let termList  = d.termItemList;
+                      let info      = "";
+                      termList.forEach(function (item) {
+                          info += item.name + "; ";
+                      });
+                      temp.push({
+                        timestamp: timestamp,
+                        info: info
+                      })
+                  });
+                  this.yearlyTermsList = temp.reverse();
+              },
 
               fillInAffDataset: function () {
                  let data = this.academicEntityVO.yearlyAffiliationList;
