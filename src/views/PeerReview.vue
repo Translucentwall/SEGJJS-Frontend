@@ -70,6 +70,7 @@ import {autoComplete, searchPeerReviewer} from "../api/api";
 
       searchPeerReviewer: function () {
         if(this.name !== '' && this.affiliation !== '' && this.terms !== '') {
+
           searchPeerReviewer(this.name, this.affiliation, this.terms).then(res=>{
             //更新评议者的列表显示
             let stars = ['★','★★','★★★','★★★★','★★★★★','★★★★★★','★★★★★★★',

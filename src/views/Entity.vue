@@ -96,7 +96,7 @@
               </el-tab-pane>
 
               <el-tab-pane name="cloud" v-if="academicEntityVO.terms&&academicEntityVO.terms.length>0">
-                <span slot="label"><i class="el-icon-cloudy"></i> Cloud</span>
+                <span slot="label"><i class="el-icon-cloudy"></i> Research Fields</span>
                 <div id="cloud-wrap">
                   <div class="svg" id="cloud"></div>
                 </div>
@@ -116,9 +116,23 @@
                   </router-link>
                 </div>
               </el-tab-pane>
+
               <el-tab-pane name="coo" v-if="cooList&&cooList.length>0">
                 <span slot="label"><i class="el-icon-coordinate"></i> Cooperator Preview</span>
                 <CooPreview :cooList="cooList"></CooPreview>
+              </el-tab-pane>
+
+              <!-- 论文引用其他论文和其他作者引用该作者的信息 -->
+              <el-tab-pane name="ref">
+                <span slot="label"><i class="el-icon-camera"></i> Reference Relations</span>
+                <div class="reference-relation-wrapper">
+                  <div class="refer-block-wrapper" id="refer-block-wrapper">
+
+                  </div>
+                  <div class="refer-block-wrapper" id="referred-block-wrapper">
+
+                  </div>
+                </div>
               </el-tab-pane>
 
             </el-tabs>
@@ -203,18 +217,20 @@ import {cooperatorPreview, getAcademicEntity, getSignificantPaper} from "../api/
                   showTermItems: [],
                   significantPapers: [],
                   timeLineList: [],
-                  cooList: []
+                  cooList: [],
+                  referred: [],
+                  cited: [],
+                  refOverLen: -1,
+                  citOverLen: -1
               }
           },
           watch: {
-              // fillData: function() {
-              //   this.fillInAffDataset();
-              // },
+
               activeName: function(){
-                  if(this.activeName === 'cloud' && !this.hasCloud && this.academicEntityVO.terms && this.academicEntityVO.terms.length > 0){
-                      let that = this;
-                      setTimeout(function (){that.renderCloudNew();},100)
-                  }
+                  // if(this.activeName === 'cloud' && !this.hasCloud && this.academicEntityVO.terms && this.academicEntityVO.terms.length > 0){
+                  //     let that = this;
+                  //     setTimeout(function (){that.renderCloudNew();},100)
+                  // }
               },
               yearSelect: function () {
                   if(this.yearSelect === -1){
@@ -285,6 +301,9 @@ import {cooperatorPreview, getAcademicEntity, getSignificantPaper} from "../api/
                       if(res.yearlyAffiliationList){
                         this.fillInAffDataset();
                       }
+
+                      this.getRefAndCitList();
+                      this.renderReferAndCitList();
                   })
                   .catch(()=>{
                       this.$alert('Fail to get entity，please search again', 'Tips',{
@@ -300,6 +319,8 @@ import {cooperatorPreview, getAcademicEntity, getSignificantPaper} from "../api/
                   this.cooList = res;
                 })
               }
+
+
           },
           methods: {
 
@@ -313,6 +334,77 @@ import {cooperatorPreview, getAcademicEntity, getSignificantPaper} from "../api/
                      })
                  });
                  this.timeLineList = timeAffList;
+              },
+
+              getRefAndCitList: function () {
+                  let uniqueRef =this.academicEntityVO.refers;
+                  let uniqueCit =this.academicEntityVO.referees;
+                  //全部数据太多，筛选前20条，并且显示还有更多内容
+                  if(uniqueRef.length > 20) {
+                      for(let i = 0; i < 20; i++) {
+                          this.referred.push(uniqueRef[i]);
+                      }
+                      this.refOverLen = uniqueRef.length - 20;
+                  } else {
+                    this.referred = uniqueRef;
+                  }
+                  if(uniqueCit.length > 20) {
+                      for(let i = 0; i < 20; i++) {
+                        this.cited.push(uniqueCit[i]);
+                      }
+                      this.citOverLen = uniqueCit.length - 20;
+                  } else {
+                      this.cited = uniqueCit;
+                  }
+                  //this.cited = this.academicEntityVO.referees;
+              },
+
+              // jumpToAuthorPage: function(id) {
+              //     window.location.href = '/entity/author/' + id;
+              // },
+
+              renderReferAndCitList: function () {
+                  let refHtml = '';
+                  let cnt = 1;
+                  refHtml +=
+                      '<div style="font-size: 22px;color: #506f88;margin-left: 20px;user-select: none;">Publication Referred To Authors...</div>' +
+                      '<div style="border-bottom: 1px solid #eeeeee;width: 500px;margin-left: 20px;margin-top: 10px;margin-bottom: 10px;"></div>';
+                  this.referred.forEach(function (ref) {
+                      let name = ref.title;
+                      let id   = ref.id;
+                      refHtml +=
+                        '<div style="font-size: 16px;color: #0b0b0b;margin-left: 35px;margin-top: 5px;cursor: pointer;' +
+                        'width: max-content;" onclick="window.location.href=\'/entity/author/' + id +'\'">' + cnt + '. ' + name + '</div>';
+                      cnt++;
+                  });
+                  if(this.refOverLen > 0) {
+                      refHtml +=
+                        '<div style="font-size: 16px;color: #c87d24;margin-left: 35px;margin-top: 5px;cursor: pointer;' +
+                        'width: max-content;">+ ' + this.refOverLen + ' More</div>';
+                  }
+                  document.getElementById("refer-block-wrapper").innerHTML = "";
+                  $('#refer-block-wrapper').append(refHtml);
+
+                  let citHtml = '';
+                  cnt = 1;
+                  citHtml +=
+                      '<div style="font-size: 22px;color: #506f88;margin-left: 20px;user-select: none;">Publication Cited By Authors...</div>' +
+                      '<div style="border-bottom: 1px solid #eeeeee;width: 500px;margin-left: 20px;margin-top: 10px;margin-bottom: 10px;"></div>';
+                  this.cited.forEach(function (cit) {
+                    let name = cit.title;
+                    let id   = cit.id;
+                    citHtml +=
+                      '<div style="font-size: 16px;color: #0b0b0b;margin-left: 35px;margin-top: 5px;cursor: pointer;' +
+                      'width: max-content;" onclick="window.location.href=\'/entity/author/' + id +'\'">' + cnt + '. ' + name + '</div>';
+                    cnt++;
+                  });
+                  if(this.citOverLen > 0) {
+                    citHtml +=
+                      '<div style="font-size: 16px;color: #c87d24;margin-left: 35px;margin-top: 5px;cursor: pointer;' +
+                      'width: max-content;">+ ' + this.citOverLen + ' More</div>';
+                  }
+                  document.getElementById("referred-block-wrapper").innerHTML = "";
+                  $('#referred-block-wrapper').append(citHtml);
               },
 
               toOtherEntity: function (type, id) {
@@ -522,6 +614,17 @@ import {cooperatorPreview, getAcademicEntity, getSignificantPaper} from "../api/
     font-size: 40px;
     color: #ffffff;
   }
+
+  .reference-relation-wrapper {
+    width: 1200px;
+    display: flex;
+    padding-bottom: 10px;
+    text-align: left;
+  }
+  .refer-block-wrapper {
+    width: 600px;
+  }
+
   .body_bottom{
     margin: 20px 50px;
   }
