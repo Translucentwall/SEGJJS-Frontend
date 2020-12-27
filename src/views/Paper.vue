@@ -11,7 +11,7 @@
     <div class="body_bottom">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/home' }">Home</el-breadcrumb-item>
-        <el-breadcrumb-item :to="'/entity/issue/'+paperVO.conferenceId"><span>{{paperVO.publicationYear}} {{paperVO.publicationTitle}}</span></el-breadcrumb-item>
+        <el-breadcrumb-item v-if="paperVO.conferenceId" :to="'/entity/issue/'+paperVO.conferenceId"><span>{{paperVO.publicationYear}} {{paperVO.publicationTitle}}</span></el-breadcrumb-item>
         <el-breadcrumb-item>{{paperVO.title}}</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="body_bottom_body">

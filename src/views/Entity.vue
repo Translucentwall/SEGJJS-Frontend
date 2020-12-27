@@ -24,7 +24,7 @@
         </el-col>
         <el-col :span="3" :offset="1" v-if="academicEntityVO.refSum>-1">
           <div class="reference citation_box">
-            <div class="citation_title">Reference</div>
+            <div class="citation_title">Citation</div>
             <div class="citation_count">{{academicEntityVO.refSum}}</div>
           </div>
         </el-col>
