@@ -95,12 +95,23 @@
                 </el-row>
               </el-tab-pane>
 
-              <el-tab-pane v-if="academicEntityVO.yearlyTerms && academicEntityVO.yearlyTerms.length > 0" name="yearly-fields">
+              <el-tab-pane name="cloud" v-if="type!==1">
+                <span slot="label"><i class="el-icon-cloudy"></i> Terms</span>
+                <div id="cloud-wrap">
+                    <div class="svg" id="cloud"></div>
+                  </div>
+                  <div class="cloud_tip" v-if="hasCloud">
+                    <em>hover or click to know more ...</em>
+                  </div>
+                </el-tab-pane>
+
+
+                <el-tab-pane v-if="academicEntityVO.keywordsYears" name="yearly-fields">
                 <span slot="label"><i class="el-icon-cloudy"></i> Research Fields</span>
                 <div class="hello">
                   <div style="display:flex; width:900px;margin:50px auto;">
                     <div style="flex:1; width: 240px">Research Field Timeline:</div>
-                    <timeLine :timeLineList = "yearlyTermsList"></timeLine>
+                    <timeLine :timeLineList = "keywordsYears"></timeLine>
                   </div>
                 </div>
               </el-tab-pane>
@@ -122,8 +133,8 @@
                 <CooPreview :cooList="cooList"></CooPreview>
               </el-tab-pane>
 
-              <!-- 论文引用其他论文和其他作者引用该作者的信息 -->
-              <el-tab-pane name="ref">
+              <!-- 其他作者引用该作者的信息 -->
+              <el-tab-pane name="ref" v-if="type===1">
                 <span slot="label"><i class="el-icon-camera"></i> Reference Relations</span>
                 <div class="reference-relation-wrapper">
                   <div class="refer-block-wrapper" id="refer-block-wrapper">
@@ -222,16 +233,18 @@ import {cooperatorPreview, getAcademicEntity, getSignificantPaper} from "../api/
                   cited: [],
                   refOverLen: -1,
                   citOverLen: -1,
-                  yearlyTermsList: []
+                  yearlyTermsList: [],
+                  keywordsYears:[]
               }
           },
           watch: {
 
               activeName: function(){
-                  // if(this.activeName === 'cloud' && !this.hasCloud && this.academicEntityVO.terms && this.academicEntityVO.terms.length > 0){
-                  //     let that = this;
-                  //     setTimeout(function (){that.renderCloudNew();},100)
-                  // }
+
+                  if(this.activeName === 'cloud' && !this.hasCloud && this.academicEntityVO.terms && this.academicEntityVO.terms.length > 0){
+                      let that = this;
+                      setTimeout(function (){that.renderCloudNew();},100)
+                  }
               },
               yearSelect: function () {
                   if(this.yearSelect === -1){
@@ -302,12 +315,13 @@ import {cooperatorPreview, getAcademicEntity, getSignificantPaper} from "../api/
                       if(res.yearlyAffiliationList){
                         this.fillInAffDataset();
                       }
-                      if(res.yearlyTerms) {
+                      if(res.keywordsYears) {
                         this.fillInYearlyTermsList();
                       }
-
-                      this.getRefAndCitList();
-                      this.renderReferAndCitList();
+                      if(res.referees||res.refers) {
+                        this.getRefAndCitList();
+                        this.renderReferAndCitList();
+                      }
                   })
                   .catch(()=>{
                       this.$alert('Fail to get entity，please search again', 'Tips',{
@@ -329,21 +343,16 @@ import {cooperatorPreview, getAcademicEntity, getSignificantPaper} from "../api/
           methods: {
 
               fillInYearlyTermsList: function() {
-                  let data = this.academicEntityVO.yearlyTerms;
+                  let data = this.academicEntityVO.keywordsYears;
                   let temp = [];
                   data.forEach(function (d) {
                       let timestamp = d.year;
-                      let termList  = d.termItemList;
-                      let info      = "";
-                      termList.forEach(function (item) {
-                          info += item.name + "; ";
-                      });
                       temp.push({
                         timestamp: timestamp,
-                        info: info
+                        info: d.keyword
                       })
                   });
-                  this.yearlyTermsList = temp.reverse();
+                  this.keywordsYears = temp.sort((a,b)=>a.timestamp-b.timestamp);
               },
 
               fillInAffDataset: function () {
@@ -359,8 +368,9 @@ import {cooperatorPreview, getAcademicEntity, getSignificantPaper} from "../api/
               },
 
               getRefAndCitList: function () {
-                  let uniqueRef =this.academicEntityVO.refers;
-                  let uniqueCit =this.academicEntityVO.referees;
+                  let uniqueRef =this.academicEntityVO.refers===null?[]:this.academicEntityVO.refers;
+                  let uniqueCit =this.academicEntityVO.referees===null?[]:this.academicEntityVO.referees;
+
                   //全部数据太多，筛选前20条，并且显示还有更多内容
                   if(uniqueRef.length > 20) {
                       for(let i = 0; i < 20; i++) {
