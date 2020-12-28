@@ -371,23 +371,25 @@ import {cooperatorPreview, getAcademicEntity, getSignificantPaper} from "../api/
                   let uniqueRef =this.academicEntityVO.refers===null?[]:this.academicEntityVO.refers;
                   let uniqueCit =this.academicEntityVO.referees===null?[]:this.academicEntityVO.referees;
 
+                  this.referred = uniqueRef;
+                  this.cited = uniqueCit;
                   //全部数据太多，筛选前20条，并且显示还有更多内容
-                  if(uniqueRef.length > 20) {
-                      for(let i = 0; i < 20; i++) {
-                          this.referred.push(uniqueRef[i]);
-                      }
-                      this.refOverLen = uniqueRef.length - 20;
-                  } else {
-                    this.referred = uniqueRef;
-                  }
-                  if(uniqueCit.length > 20) {
-                      for(let i = 0; i < 20; i++) {
-                        this.cited.push(uniqueCit[i]);
-                      }
-                      this.citOverLen = uniqueCit.length - 20;
-                  } else {
-                      this.cited = uniqueCit;
-                  }
+                  // if(uniqueRef.length > 20) {
+                  //     for(let i = 0; i < 20; i++) {
+                  //         this.referred.push(uniqueRef[i]);
+                  //     }
+                  //     this.refOverLen = uniqueRef.length - 20;
+                  // } else {
+                  //   this.referred = uniqueRef;
+                  // }
+                  // if(uniqueCit.length > 20) {
+                  //     for(let i = 0; i < 20; i++) {
+                  //       this.cited.push(uniqueCit[i]);
+                  //     }
+                  //     this.citOverLen = uniqueCit.length - 20;
+                  // } else {
+                  //     this.cited = uniqueCit;
+                  // }
                   //this.cited = this.academicEntityVO.referees;
               },
 
