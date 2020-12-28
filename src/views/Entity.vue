@@ -547,6 +547,7 @@ import {cooperatorPreview, getAcademicEntity, getSignificantPaper} from "../api/
                         value: (d.hot+1)/(maxHot+1)>0.8? 20+(d.hot+1)/(maxHot+1)*20: 20+(d.hot+1)/(maxHot+1)*20
                       })
                   });
+                  echartData.push({name:"", id:-1, value:maxHot})
                   console.log(echartData);
                   let myChart = echarts.init(document.getElementById('cloud'));
                   let option = {

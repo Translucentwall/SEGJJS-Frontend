@@ -11,7 +11,7 @@
     <div class="body_bottom">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/home' }">Home</el-breadcrumb-item>
-        <el-breadcrumb-item v-if="paperVO.conferenceId" :to="'/entity/issue/'+paperVO.conferenceId"><span>{{paperVO.publicationYear}} {{paperVO.publicationTitle}}</span></el-breadcrumb-item>
+        <el-breadcrumb-item v-if="paperVO.conferenceId" :to="'/entity/issue/'+paperVO.conferenceId"><span>{{paperVO.year}} {{paperVO.conferenceTitle}}</span></el-breadcrumb-item>
         <el-breadcrumb-item>{{paperVO.title}}</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="body_bottom_body">
@@ -36,50 +36,25 @@
                   <div class="subtitle">Summary:</div>
                   {{paperVO.summary}}
                 </div>
-                <div class="publication font-medium" v-if="paperVO.publicationTitle">
+                <div class="publication font-medium" v-if="paperVO.conferenceTitle">
                   <div class="subtitle">Publication:</div>
-                  <a class="issue" :href="'/entity/issue/'+paperVO.conferenceId">{{paperVO.publicationTitle}}, P{{paperVO.startPage}} - P{{paperVO.endPage}}, {{paperVO.publicationYear}}</a>
-                </div>
-                <div class="publisher font-medium" v-if="paperVO.publisher">
-                  <span class="subtitle">Publisher: </span>{{paperVO.publisher}}
+                  <a class="issue" :href="'/entity/issue/'+paperVO.conferenceId">{{paperVO.conferenceTitle}}, {{paperVO.year}}</a>
                 </div>
                 <div class="DOI font-medium" v-if="paperVO.doi">
                   <span class="subtitle">DOI: </span>{{paperVO.doi}}
                 </div>
-                <div class="PDFLink font-medium" v-if="paperVO.pdflink">
-                  <span class="subtitle">PDF Link: </span><a :href="paperVO.pdflink">{{paperVO.pdflink}}</a>
-                </div>
               </div>
             </el-collapse-item>
-            <el-collapse-item title="Authors" name="2" class="block" v-if="paperVO.author_affiliationVOS&&paperVO.author_affiliationVOS[0]">
-              <div class="author_affiliation" v-for="item in paperVO.author_affiliationVOS" v-if="item.author">
+            <el-collapse-item title="Authors" name="2" class="block" v-if="paperVO.authorAffiliationVOS&&paperVO.authorAffiliationVOS[0]">
+              <div class="author_affiliation" v-for="item in paperVO.authorAffiliationVOS" v-if="item.author">
                 <a class="author" :href="'/entity/author/'+item.authorId">{{item.author}}</a>
                 <a class="affiliation" :href="'/entity/affiliation/'+item.affiliation.id" v-if="item.affiliation.name !== 'NA'">{{item.affiliation.name}}</a>
               </div>
             </el-collapse-item>
             <el-collapse-item title="Keywords" name="3" class="block" v-if="(paperVO.authorKeywords&&paperVO.authorKeywords[0])||(paperVO.ieeeterms&&paperVO.ieeeterms[0])||(paperVO.controlledTerms&&paperVO.controlledTerms[0])||(paperVO.nonControlledTerms&&paperVO.nonControlledTerms[0])">
               <div class="author_keywords keywords" v-if="paperVO.authorKeywords&&paperVO.authorKeywords[0]">
-                <div class="subtitle">Author Keywords</div>
                 <div class="keyword_wrap">
                   <span v-for="keyword in paperVO.authorKeywords" class="keyword" @click="search(keyword)">{{keyword}}</span>
-                </div>
-              </div>
-              <div class="IEEE_keywords keywords" v-if="paperVO.ieeeterms&&paperVO.ieeeterms[0]">
-                <div class="subtitle">IEEE Keywords</div>
-                <div class="keyword_wrap">
-                  <span v-for="keyword in paperVO.ieeeterms" class="keyword" @click="search(keyword)">{{keyword}}</span>
-                </div>
-              </div>
-              <div class="controlled_terms keywords" v-if="paperVO.controlledTerms&&paperVO.controlledTerms[0]">
-                <div class="subtitle">INSPEC: Controlled Indexing</div>
-                <div class="keyword_wrap">
-                  <span v-for="keyword in paperVO.controlledTerms" class="keyword" @click="search(keyword)">{{keyword}}</span>
-                </div>
-              </div>
-              <div class="non_controlled_terms keywords" v-if="paperVO.nonControlledTerms&&paperVO.nonControlledTerms[0]">
-                <div class="subtitle">INSPEC: Non-Controlled Indexing</div>
-                <div class="keyword_wrap">
-                  <span v-for="keyword in paperVO.nonControlledTerms" class="keyword" @click="search(keyword)">{{keyword}}</span>
                 </div>
               </div>
             </el-collapse-item>
