@@ -58,6 +58,16 @@
                 </div>
               </div>
             </el-collapse-item>
+            <el-collapse-item title="References" name="4" class="block" v-if="paperVO.refers && paperVO.refers[0]">
+              <div class="author_affiliation" v-for="item in paperVO.refers" v-if="item.title">
+                <a class="author" :href="'/paper/'+item.id">{{item.title}}</a>
+              </div>
+            </el-collapse-item>
+            <el-collapse-item title="Citations" name="5" class="block" v-if="paperVO.referees && paperVO.referees[0]">
+              <div class="author_affiliation" v-for="item in paperVO.referees" v-if="item.title">
+                <a class="author" :href="'/paper/'+item.id">{{item.title}}</a>
+              </div>
+            </el-collapse-item>
           </el-collapse>
         </div>
 
