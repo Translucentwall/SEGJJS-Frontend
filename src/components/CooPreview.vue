@@ -8,17 +8,17 @@
     <el-table-column
       header-align="center"
       prop="author"
-      label="名字"
+      label="Name"
       width="160">
     </el-table-column>
     <el-table-column
       prop="affiliation"
-      label="机构"
+      label="Affiliation"
       width="720">
     </el-table-column>
     <el-table-column
       prop="value"
-      label="可能性">
+      label="Possibility">
     </el-table-column>
   </el-table>
 </template>

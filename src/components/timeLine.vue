@@ -12,7 +12,9 @@
               <div class="dot" @mouseover="changeActive(0)" :class="{active: 0 === timeIndex}"></div>
             </el-tooltip>
 
-            <div class="item"></div>
+            <div class="item" v-if="timeLineList.length>1"></div>
+            <div style="flex: 1" v-if="timeLineList.length===1"></div>
+
           </div>
           <div class="item_bottom">
             <span>{{timeLineList[0].timestamp}}</span>
@@ -31,7 +33,7 @@
             <span>{{timeLineList[index].timestamp}}</span>
           </div>
         </div>
-        <div style="flex:1;display:flex;flex-direction:column;">
+        <div style="flex:1;display:flex;flex-direction:column;" v-if="timeLineList.length>1">
           <div style="flex:1;display:flex">
             <div class="item"></div>
             <el-tooltip effect="light" placement="top-end">
