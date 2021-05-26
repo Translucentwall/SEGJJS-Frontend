@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "ajv": "^6.12.5",
-    "browserslist": "^4.14.5",
+    "browserslist": "^4.16.5",
     "caniuse-lite": "^1.0.30001144",
     "d3": "^5.16.0",
     "d3-array": "^2.8.0",
